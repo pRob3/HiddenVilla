@@ -1,0 +1,44 @@
+﻿@page "/gameList"
+
+@using Model
+<h3>GameLoop</h3>
+
+@foreach (var game in RoomsList)
+{
+    <GameInfoComponent ImageSize="120">@game</GameInfoComponent>
+}
+
+@code {
+
+    List<BlazorRoom> RoomsList = new List<BlazorRoom>();
+
+    protected override void OnInitialized()
+    {
+        RoomsList.Add(new BlazorRoom()
+        {
+            Id = 1,
+            RoomName = "Mario",
+            IsActive = true,
+            Price = 399,
+            RoomProps = new List<BlazorRoomProp>
+            {
+                new BlazorRoomProp{Id = 1, Name = "Sq Ft", Value = "330"},
+                new BlazorRoomProp{Id = 2, Name = "Occupancy", Value = "4"}
+            }
+        });
+
+        RoomsList.Add(new BlazorRoom()
+        {
+            Id = 2,
+            RoomName = "Ice Climber",
+            IsActive = true,
+            Price = 399,
+            RoomProps = new List<BlazorRoomProp>
+            {
+                new BlazorRoomProp{Id = 1, Name = "Sq Ft", Value = "330"},
+                new BlazorRoomProp{Id = 2, Name = "Occupancy", Value = "4"}
+            }
+        });
+    }
+
+}

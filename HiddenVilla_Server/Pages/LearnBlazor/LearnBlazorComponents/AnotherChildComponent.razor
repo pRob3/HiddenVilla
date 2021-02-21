@@ -1,0 +1,24 @@
+﻿<div>
+    <h4 class="text-primary pt-3">Another Child Component</h4>
+    <input id="roomName" placeholder="Initial Text" @attributes="InputAttributes" class="form-control" />
+</div>
+
+@code {
+    //[Parameter]
+    //public string Placeholder { get; set; } = "Initial Text";
+    //[Parameter]
+    //public string Required { get; set; } = "required";
+    //[Parameter]
+    //public string MaxLength { get; set; } = "10";
+
+    //[Parameter]
+    //public Dictionary<string, object> InputAttributes { get; set; } = new Dictionary<string, object>()
+    //{
+    //    { "required" , "required" },
+    //    {"placeholder" , "Initial text" },
+    //    {"maxlength", 10 }
+    //};
+
+    [Parameter(CaptureUnmatchedValues = true)]
+    public Dictionary<string, object> InputAttributes { get; set; } = new Dictionary<string, object>();
+}
