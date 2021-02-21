@@ -5,7 +5,7 @@
 @inject IAmenityRepository AmenityRepository
 @inject NavigationManager NavigationManager
 @inject IJSRuntime jsRuntime
-@attribute [Authorize]
+
 
 <div class="row mt-2 mb-5">
     <h3 class="card-title text-info mb-3 ml-3">@Title Hotel Amenity</h3>
@@ -20,22 +20,22 @@
                     <div class="form-group">
                         <label>Name</label>
                         <InputText @bind-Value="HotelAmenityModel.Name" class="form-control"></InputText>
-                        <ValidationMessage For="()=>HotelAmenityModel.Name"></ValidationMessage>
+                        <ValidationMessage For="() => HotelAmenityModel.Name"></ValidationMessage>
                     </div>
                     <div class="form-group">
                         <label>Description</label>
                         <InputTextArea @bind-Value="HotelAmenityModel.Description" class="form-control"></InputTextArea>
-                        <ValidationMessage For="()=>HotelAmenityModel.Description"></ValidationMessage>
+                        <ValidationMessage For="() => HotelAmenityModel.Description"></ValidationMessage>
                     </div>
                     <div class="form-group">
                         <label>Timming</label>
                         <InputText @bind-Value="HotelAmenityModel.Timming" class="form-control"></InputText>
-                        <ValidationMessage For="()=>HotelAmenityModel.Timming"></ValidationMessage>
+                        <ValidationMessage For="() => HotelAmenityModel.Timming"></ValidationMessage>
                     </div>
                     <div class="form-group">
                         <label>Icon Style</label>
                         <InputText @bind-Value="HotelAmenityModel.IconStyle" class="form-control"></InputText>
-                        <ValidationMessage For="()=>HotelAmenityModel.IconStyle"></ValidationMessage>
+                        <ValidationMessage For="() => HotelAmenityModel.IconStyle"></ValidationMessage>
                     </div>
 
 
@@ -62,8 +62,19 @@
 
     internal bool IsProcessingStart { get; set; } = false;
 
+    [CascadingParameter]
+    public Task<AuthenticationState> AuthenticationState { get; set;}
+
+
     protected override async Task OnInitializedAsync()
     {
+        var authenticationState = await AuthenticationState;
+        if (!authenticationState.User.Identity.IsAuthenticated)
+        {
+            var uri = new Uri(NavigationManager.Uri);
+            NavigationManager.NavigateTo($"/identity/account/login?returnUrl={uri.LocalPath}");
+        }
+
         if (Id != null)
         {
             //we work with update
