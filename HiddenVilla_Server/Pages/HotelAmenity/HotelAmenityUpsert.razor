@@ -7,6 +7,7 @@
 @inject IJSRuntime jsRuntime
 
 
+
 <div class="row mt-2 mb-5">
     <h3 class="card-title text-info mb-3 ml-3">@Title Hotel Amenity</h3>
 
@@ -63,13 +64,13 @@
     internal bool IsProcessingStart { get; set; } = false;
 
     [CascadingParameter]
-    public Task<AuthenticationState> AuthenticationState { get; set;}
+    public Task<AuthenticationState> AuthenticationState { get; set; }
 
 
     protected override async Task OnInitializedAsync()
     {
         var authenticationState = await AuthenticationState;
-        if (!authenticationState.User.Identity.IsAuthenticated)
+        if (!authenticationState.User.IsInRole(Common.SD.Role_Admin))
         {
             var uri = new Uri(NavigationManager.Uri);
             NavigationManager.NavigateTo($"/identity/account/login?returnUrl={uri.LocalPath}");

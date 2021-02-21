@@ -7,8 +7,9 @@
 @inject IHotelImagesRepository HotelImagesRepository
 @inject NavigationManager navMan
 @inject IJSRuntime JsRuntime
-@inject IFileUpload fileUpload 
-@attribute [Authorize]
+@inject IFileUpload fileUpload
+@attribute [Authorize(Roles = Common.SD.Role_Admin)]
+
 
 <div class="row mt-2 mb-5">
     <h3 class="card-title text-info mb-3 ml-3">@Title Hotel Room</h3>
@@ -80,7 +81,7 @@
                                     <span><i class="fade fa-spin fa-spinner"></i> Please wait.. Images are uploading...</span>
                                 </div>
                             }
-                            @if(HotelRoomModel.ImageUrls != null && HotelRoomModel.ImageUrls.Count > 0)
+                            @if (HotelRoomModel.ImageUrls != null && HotelRoomModel.ImageUrls.Count > 0)
                             {
                                 int serial = 1;
                                 foreach (var roomImage in HotelRoomModel.ImageUrls)
@@ -90,7 +91,7 @@
                                             <span class="room-image-title">@serial</span>
                                         </div>
                                         <button type="button" @onclick="()=>DeletePhoto(roomImage)" class="btn btn-outline-danger btn-block mt-4">Delete</button>
-                                    </div>                                    
+                                    </div>
                                     serial++;
                                 }
                             }
@@ -120,12 +121,12 @@
 
     protected override async Task OnInitializedAsync()
     {
-        if(Id != null)
+        if (Id != null)
         {
             // Updating
             Title = "Update";
             HotelRoomModel = await HotelRoomRepository.GetHotelRoom(Id.Value);
-            if(HotelRoomModel?.HotelRoomImages != null)
+            if (HotelRoomModel?.HotelRoomImages != null)
             {
                 HotelRoomModel.ImageUrls = HotelRoomModel.HotelRoomImages.Select(u => u.RoomImageUrl).ToList();
             }
@@ -182,12 +183,12 @@
                 HotelRoomModel.Details = await QuillHtml.GetHTML();
                 // Update
                 var updateRoomResult = await HotelRoomRepository.UpdateHotelRoom(HotelRoomModel.Id, HotelRoomModel);
-                if((HotelRoomModel.ImageUrls != null && HotelRoomModel.ImageUrls.Any())
+                if ((HotelRoomModel.ImageUrls != null && HotelRoomModel.ImageUrls.Any())
                     || (DeletedImageNames != null && DeletedImageNames.Any())
                     )
                 {
 
-                    if(DeletedImageNames != null && DeletedImageNames.Any())
+                    if (DeletedImageNames != null && DeletedImageNames.Any())
                     {
                         foreach (var deletedImageName in DeletedImageNames)
                         {
@@ -268,7 +269,7 @@
 
                 if (images.Any())
                 {
-                    if(HotelRoomModel.ImageUrls != null && HotelRoomModel.ImageUrls.Any())
+                    if (HotelRoomModel.ImageUrls != null && HotelRoomModel.ImageUrls.Any())
                     {
                         HotelRoomModel.ImageUrls.AddRange(images);
                     }
@@ -298,7 +299,7 @@
     {
         foreach (var imageUrl in HotelRoomModel.ImageUrls)
         {
-            if(HotelRoomModel.HotelRoomImages == null || HotelRoomModel.HotelRoomImages.Where(x => x.RoomImageUrl == imageUrl).Count() == 0)
+            if (HotelRoomModel.HotelRoomImages == null || HotelRoomModel.HotelRoomImages.Where(x => x.RoomImageUrl == imageUrl).Count() == 0)
             {
                 RoomImage = new HotelRoomImageDTO()
                 {
@@ -317,7 +318,7 @@
             var imageIndex = HotelRoomModel.ImageUrls.FindIndex(x => x == imageUrl);
             var imageName = imageUrl.Replace($"{navMan.BaseUri}RoomImages/", "");
 
-            if(HotelRoomModel.Id == 0 && Title == "Create")
+            if (HotelRoomModel.Id == 0 && Title == "Create")
             {
                 var result = fileUpload.DeleteFile(imageName);
             }
