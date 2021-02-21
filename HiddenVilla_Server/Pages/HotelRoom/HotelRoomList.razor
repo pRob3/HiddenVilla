@@ -2,9 +2,10 @@
 @using Models
 @using Business.Repository.IRepository
 @inject IHotelRoomRepository HotelRoomRepository
-@inject IJSRuntime JsRuntime  
+@inject IJSRuntime JsRuntime
 @inject HiddenVilla_Server.Service.IService.IFileUpload FileUpload
 @inject NavigationManager NavigationManager
+@attribute [Authorize]
 
 <div class="row mt-4">
     <div class="col-8">
