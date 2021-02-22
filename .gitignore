@@ -3,6 +3,9 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
+# wwwroot Images
+[Rr]oom[Ii]mages/
+
 # User-specific files
 *.rsuser
 *.suo
