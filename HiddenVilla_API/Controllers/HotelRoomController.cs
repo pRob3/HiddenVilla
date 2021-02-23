@@ -1,4 +1,6 @@
 ﻿using Business.Repository.IRepository;
+using Common;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Models;
@@ -20,6 +22,7 @@ namespace HiddenVilla_API.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = SD.Role_Admin)]
         public async Task<IActionResult> GetHotelRooms()
         {
             var allRooms = await _hotelRoomRepository.GetAllHotelRooms();
