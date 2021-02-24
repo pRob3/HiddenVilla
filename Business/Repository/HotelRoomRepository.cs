@@ -65,7 +65,7 @@ namespace Business.Repository
             throw new NotImplementedException();
         }
 
-        public async Task<IEnumerable<HotelRoomDTO>> GetAllHotelRooms()
+        public async Task<IEnumerable<HotelRoomDTO>> GetAllHotelRooms(string checkInDateStr, string checkOutDateStr)
         {
             try
             {
@@ -84,7 +84,7 @@ namespace Business.Repository
             throw new NotImplementedException();
         }
 
-        public async Task<HotelRoomDTO> GetHotelRoom(int roomId)
+        public async Task<HotelRoomDTO> GetHotelRoom(int roomId, string checkInDateStr, string checkOutDateStr)
         {
             try
             {
