@@ -23,11 +23,10 @@ namespace HiddenVilla_API.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = SD.Role_Admin)]
         public async Task<IActionResult> GetHotelRooms(string checkInDate = null, string checkOutDate = null)
         {
 
-            if(string.IsNullOrEmpty(checkInDate) || string.IsNullOrEmpty(checkOutDate))
+            if (string.IsNullOrEmpty(checkInDate) || string.IsNullOrEmpty(checkOutDate))
             {
                 return BadRequest(new ErrorModel()
                 {
@@ -36,7 +35,7 @@ namespace HiddenVilla_API.Controllers
                 });
             }
 
-            if(!DateTime.TryParseExact(checkInDate, "MM/dd/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out var dtCheckInDate))
+            if (!DateTime.TryParseExact(checkInDate, "MM/dd/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out var dtCheckInDate))
             {
                 return BadRequest(new ErrorModel()
                 {

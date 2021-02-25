@@ -81,7 +81,6 @@ namespace Business.Repository
                 return null;
             }
 
-            throw new NotImplementedException();
         }
 
         public async Task<HotelRoomDTO> GetHotelRoom(int roomId, string checkInDateStr, string checkOutDateStr)
@@ -101,7 +100,7 @@ namespace Business.Repository
             }
         }
 
-        // fIf unique returns null else return room obj
+        // If unique returns null else return room obj
         public async Task<HotelRoomDTO> IsRoomUnique(string name, int roomId = 0)
         {
             try

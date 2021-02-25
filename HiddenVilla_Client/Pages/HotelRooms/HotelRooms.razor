@@ -1,7 +1,44 @@
 ﻿@page "/hotel/rooms"
+@inject ILocalStorageService localStorage
+@inject IJSRuntime jsRuntime
+@inject IHotelRoomService hotelRoomService
 
 <h3>HotelRooms</h3>
 
 @code {
+    private HomeVM HomeModel { get; set; } = new HomeVM();
+    public IEnumerable<HotelRoomDTO> Rooms { get; set; } = new List<HotelRoomDTO>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            if(await localStorage.GetItemAsync<HomeVM>(SD.Local_InitialBooking) != null)
+            {
+                HomeModel = await localStorage.GetItemAsync<HomeVM>(SD.Local_InitialBooking);
+            }
+            else
+            {
+                HomeModel.NoOfNights = 1;
+            }
+
+            await LoadRooms();
+        }
+        catch (Exception e)
+        {
+            await jsRuntime.ToastrError(e.Message);
+        }
+    }
+
+    private async Task LoadRooms()
+    {
+
+        var fixStartDate = HomeModel.StartDate.ToString("MM/dd/yyyy").Replace('-', '/');
+        var fixEndDate = HomeModel.EndDate.ToString("MM/dd/yyyy").Replace('-', '/');
+
+        //Rooms = await hotelRoomService.GetHotelRooms(HomeModel.StartDate.ToString("MM/dd/yyyy"), HomeModel.EndDate.ToString("MM/dd/yyyy"));
+        Rooms = await hotelRoomService.GetHotelRooms(fixStartDate, fixEndDate);
+
+    }
 
 }
