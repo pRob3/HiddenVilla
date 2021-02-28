@@ -42,6 +42,7 @@ namespace HiddenVilla_Server
                 .AddDefaultUI();
 
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
             services.AddScoped<IHotelRoomRepository, HotelRoomRepository>();
             services.AddScoped<IAmenityRepository, AmenityRepository>();
             services.AddScoped<IDbInitializer, DbInitializer>();
