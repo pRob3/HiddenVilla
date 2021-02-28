@@ -82,21 +82,40 @@ namespace HiddenVilla_API.Controllers
                 });
             }
 
-            if (!DateTime.TryParseExact(checkInDate, "MM/dd/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out var dtCheckInDate))
+            //if (!DateTime.TryParseExact(checkInDate, "MM/dd/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out var dtCheckInDate))
+            //{
+            //    return BadRequest(new ErrorModel()
+            //    {
+            //        StatusCode = StatusCodes.Status400BadRequest,
+            //        ErrorMessage = "Invalid check in date format. Valid format is MM/dd/yyyy"
+            //    });
+            //}
+
+            //if (!DateTime.TryParseExact(checkOutDate, "MM/dd/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out var dtCheckOutDate))
+            //{
+            //    return BadRequest(new ErrorModel()
+            //    {
+            //        StatusCode = StatusCodes.Status400BadRequest,
+            //        ErrorMessage = "Invalid check out date format. Valid format is MM/dd/yyyy"
+            //    });
+            //}
+
+
+            if (!DateTime.TryParse(checkInDate, out var dtCheckInDate))
             {
                 return BadRequest(new ErrorModel()
                 {
                     StatusCode = StatusCodes.Status400BadRequest,
-                    ErrorMessage = "Invalid check in date format. Valid format is MM/dd/yyyy"
+                    ErrorMessage = "Invalid check in date format."
                 });
             }
 
-            if (!DateTime.TryParseExact(checkOutDate, "MM/dd/yyyy", CultureInfo.InvariantCulture, DateTimeStyles.None, out var dtCheckOutDate))
+            if (!DateTime.TryParse(checkOutDate, out var dtCheckOutDate))
             {
                 return BadRequest(new ErrorModel()
                 {
                     StatusCode = StatusCodes.Status400BadRequest,
-                    ErrorMessage = "Invalid check out date format. Valid format is MM/dd/yyyy"
+                    ErrorMessage = "Invalid check out date format."
                 });
             }
 
