@@ -20,6 +20,7 @@ namespace HiddenVilla_API.Controllers
             _config = config;
         }
 
+        [HttpPost]
         public async Task<IActionResult> Create(StripePaymentDTO payment)
         {
             try
