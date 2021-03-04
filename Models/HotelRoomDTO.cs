@@ -29,5 +29,7 @@ namespace Models
 
         public List<string> ImageUrls { get; set; }
 
+        public bool IsBooked { get; set; }
+
     }
 }
