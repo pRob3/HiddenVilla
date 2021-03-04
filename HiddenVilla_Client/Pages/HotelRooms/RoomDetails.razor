@@ -214,6 +214,7 @@ else
 
             await localStorage.SetItemAsync(SD.Local_RoomOrderDetails, roomOrderDetailsServiceSaved);
 
+            await jsRuntime.InvokeVoidAsync("redirectToCheckout", result.Data.ToString());
         }
         catch (Exception e)
         {

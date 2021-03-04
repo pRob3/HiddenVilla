@@ -16,6 +16,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json.Serialization;
+using Stripe;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -127,6 +128,8 @@ namespace HiddenVilla_API
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "HiddenVilla_API v1"));
             }
+
+            StripeConfiguration.ApiKey = Configuration.GetSection("Stripe")["ApiKey"];
 
             app.UseHttpsRedirection();
 
