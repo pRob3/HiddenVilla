@@ -1,5 +1,6 @@
 ﻿@page "/registration"
 
+
     <EditForm Model="userForRegistration" OnValidSubmit="RegisterUser" class="pt-4">
         <DataAnnotationsValidator />
         <div class="py-4">
@@ -68,16 +69,3 @@
             </div>
         </div>
     </EditForm>
-
-
-    @code{
-        private UserRequestDTO userForRegistration = new UserRequestDTO();
-        public bool IsProcessing { get; set; } = false;
-        public bool ShowRegistrationErrors { get; set; }
-        public IEnumerable<string> Errors { get; set; }
-
-        private async Task RegisterUser()
-        {
-
-        }
-    }
