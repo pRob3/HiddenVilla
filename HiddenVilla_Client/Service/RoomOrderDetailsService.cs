@@ -44,10 +44,6 @@ namespace HiddenVilla_Client.Service
 
         public async Task<RoomOrderDetailsDTO> SaveRoomOrderDetails(RoomOrderDetailsDTO details)
         {
-            // Dummy
-            details.UserId = "Dummy user";
-
-
             var content = JsonConvert.SerializeObject(details);
 
             var bodyContent = new StringContent(content, Encoding.UTF8, "application/json");
