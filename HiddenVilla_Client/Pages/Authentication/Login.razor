@@ -2,16 +2,28 @@
 
     <h1 class="h3 mb-3 pt-3 font-weight-normal text-primary" style="text-align:center;">Sign In</h1>
 
-    <form>
-        <input id="email" placeholder="Email..." class="form-control mb-2" />
-        <input type="password" placeholder="Password..." id="password" class="form-control mb-2" />
+    <EditForm Model="userForAuthentication" OnValidSubmit="LoginUser">
+        <DataAnnotationsValidator />
+        @if (ShowLoginError)
+        {
+            <p class="text-center text-danger">@Error</p>
+        }
+        <InputText @bind-Value="userForAuthentication.UserName" id="email" placeholder="Email..." class="form-control mb-2" />
+        <ValidationMessage For="(()=>userForAuthentication.UserName)" />
 
-        <button type="submit" class="btn btn-success btn-block"><i class="fas fa-sign-in-alt"></i> Sign in</button>
+        <InputText @bind-Value="userForAuthentication.Password" type="password" placeholder="Password..." id="password" class="form-control mb-2" />
+        <ValidationMessage For="(()=>userForAuthentication.Password)" />
+
+        @if (IsProcessing)
+        {
+            <button class="btn btn-success btn-block disabled"><i class="fas fa-sign-in-alt"></i> Signing in...</button>
+        }
+        else
+        {
+            <button type="submit" class="btn btn-success btn-block"><i class="fas fa-sign-in-alt"></i> Sign in</button>
+
+        }
 
         <a href="/registration"
            class="btn btn-primary text-white mt-3"><i class="fas fa-user-plus"></i> Register as a new user</a>
-    </form>
-
-@code{
-
-}
+    </EditForm>
