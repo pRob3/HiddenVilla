@@ -1,4 +1,8 @@
 ﻿@page "/hotel-room-order/details/{Id:int}"
+@using Models;
+@using Business.Repository.IRepository
+@using Common
+@inject IRoomOrderDetailsRepository roomOrderDetailsRepository
 
 <div class="mt-4 px-md-1 mx-md-1">
 
@@ -12,7 +16,6 @@
         <div class="col-12 col-lg-8 p-4">
             <div class="row px-2 text-success border-bottom">
                 <div class="col-8 py-1"><p style="font-size:x-large;margin:0px;">Selected Room</p></div>
-
             </div>
 
             <div class="row">
@@ -22,8 +25,6 @@
                             <ol class="carousel-indicators">
 
                                 <li data-target="#carouselExampleIndicators" data-slide-to="" class="active"></li>
-
-
                             </ol>
                             <div class="carousel-inner">
                                 <div class="carousel-item active">
@@ -47,7 +48,6 @@
                         <span class="float-right pt-1">Villa Size : ## sqft</span><br />
                         <span class="float-right pt-1">Cost for ## nights</span><br />
                         <h4 class="text-warning font-weight-bold pt-5 float-right">USD <span style="border-bottom:1px solid #ff6a00"> ##</span></h4>
-
                     </span>
                 </div>
             </div>
@@ -58,7 +58,6 @@
                         ##DETAILS##
                     </p>
                 </div>
-
             </div>
             <div class="row p-2">
 
@@ -66,11 +65,9 @@
                     <button class="btn btn-danger form-control">Cancel Booking </button>
                 </div>
 
-
                 <div class="col-3 offset-1">
                     <button class="btn btn-warning form-control">No Show </button>
                 </div>
-
             </div>
         </div>
 
@@ -107,7 +104,6 @@
                 <input type="text" disabled class="form-control" />
             </div>
 
-
             <div class="form-group">
                 <label class="text-warning">Actual Check Out Date</label>
                 <input type="text" disabled class="form-control" />
@@ -115,23 +111,58 @@
 
             <div class="form-group">
 
-
                 <button class="btn btn-success">Confirm Check In</button>
 
                 <button class="btn btn-success">Confirm Check Out </button>
-
             </div>
         </div>
-
-
     </div>
-
-
-
 </div>
-
 
 @code {
     [Parameter]
     public int Id { get; set; }
+
+    private RoomOrderDetailsDTO HotelBooking { get; set; } = new RoomOrderDetailsDTO() { HotelRoomDTO = new HotelRoomDTO() };
+    private bool IsLoading { get; set; } = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        IsLoading = true;
+
+        if (Id != 0)
+        {
+            HotelBooking = await roomOrderDetailsRepository.GetRoomOrderDetail(Id);
+        }
+        else
+        {
+            // Error
+        }
+
+        IsLoading = false;
+    }
+
+    private async Task ConfirmCheckIn()
+    {
+        await roomOrderDetailsRepository.UpdateOrderStatus(HotelBooking.Id, SD.Status_CheckedIn);
+        HotelBooking = await roomOrderDetailsRepository.GetRoomOrderDetail(Id);
+    }
+
+    private async Task ConfirmCheckOut()
+    {
+        await roomOrderDetailsRepository.UpdateOrderStatus(HotelBooking.Id, SD.Status_CheckedOut_Completed);
+        HotelBooking = await roomOrderDetailsRepository.GetRoomOrderDetail(Id);
+    }
+
+    private async Task CancelBooking()
+    {
+        await roomOrderDetailsRepository.UpdateOrderStatus(HotelBooking.Id, SD.Status_Cancelled);
+        HotelBooking = await roomOrderDetailsRepository.GetRoomOrderDetail(Id);
+    }
+
+    private async Task NoShowBooking()
+    {
+        await roomOrderDetailsRepository.UpdateOrderStatus(HotelBooking.Id, SD.Status_NoShow);
+        HotelBooking = await roomOrderDetailsRepository.GetRoomOrderDetail(Id);
+    }
 }
