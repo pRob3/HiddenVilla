@@ -1,5 +1,8 @@
 ﻿@page "/bindprop"
 @using Model
+@using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage
+@inject ProtectedLocalStorage localStorage
+@inject ProtectedSessionStorage sessionStorage
 
 <div class="bg-light border p-2">
     <h2 class="bg-light border p-2">
@@ -37,18 +40,18 @@
     <table class="table table-dark">
         @foreach (var room in RoomsList)
         {
-        <tr>
-            <td>
-                <input type="text" @bind-value="room.RoomName" @bind-value:event="oninput" />
-            </td>
-            <td>
-                <input type="text" @bind-value="room.Price" @bind-value:event="oninput" />
-            </td>
-            @foreach (var roomProp in room.RoomProps)
-            {
-                <td>@roomProp.Name - @roomProp.Value</td>
-            }
-        </tr>
+            <tr>
+                <td>
+                    <input type="text" @bind-value="room.RoomName" @bind-value:event="oninput" />
+                </td>
+                <td>
+                    <input type="text" @bind-value="room.Price" @bind-value:event="oninput" />
+                </td>
+                @foreach (var roomProp in room.RoomProps)
+                {
+                    <td>@roomProp.Name - @roomProp.Value</td>
+                }
+            </tr>
         }
     </table>
     <br />
@@ -58,10 +61,20 @@
     }
 </div>
 
+
+
+<p>Counter value from other page (Session): @CounterSession</p>
+<p>Counter value from other page (Local): @CounterLocal</p>
+
+
 @code{
 
     string SelectedRoomProp = "";
     List<BlazorRoom> RoomsList = new List<BlazorRoom>();
+
+    public int CounterSession { get; set; }
+    public int CounterLocal { get; set; }
+
 
     private string CheckActive = "NOT active";
 
@@ -72,15 +85,25 @@
         IsActive = true,
         Price = 399,
         RoomProps = new List<BlazorRoomProp>
-            {
+        {
                 new BlazorRoomProp{Id = 1, Name = "Sq Ft", Value = "330"},
                 new BlazorRoomProp{Id = 2, Name = "Occupancy", Value = "4"}
             }
     };
 
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
+
+
+        var resultLocal = await localStorage.GetAsync<int>("counterLocal");
+        CounterLocal = resultLocal.Success ? resultLocal.Value : 0;
+
+        var resultSession = await localStorage.GetAsync<int>("counterSession");
+        CounterSession = resultSession.Success ? resultSession.Value : 0;
+
+
+
         base.OnInitialized();
 
         RoomsList.Add(new BlazorRoom()
@@ -90,7 +113,7 @@
             IsActive = true,
             Price = 399,
             RoomProps = new List<BlazorRoomProp>
-            {
+        {
                 new BlazorRoomProp{Id = 1, Name = "Sq Ft", Value = "330"},
                 new BlazorRoomProp{Id = 2, Name = "Occupancy", Value = "4"}
             }
@@ -103,7 +126,7 @@
             IsActive = true,
             Price = 699,
             RoomProps = new List<BlazorRoomProp>
-            {
+        {
                 new BlazorRoomProp{Id = 1, Name = "Sq Ft", Value = "150"},
                 new BlazorRoomProp{Id = 2, Name = "Occupancy", Value = "6"}
             }
