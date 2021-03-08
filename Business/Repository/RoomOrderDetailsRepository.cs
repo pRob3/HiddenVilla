@@ -123,10 +123,11 @@ namespace Business.Repository
                 }
                 if(status == SD.Status_CheckedOut_Completed)
                 {
-                    roomOrder.ActualCheckInDate = DateTime.Now;
+                    roomOrder.ActualCheckOutDate = DateTime.Now;
                 }
 
                 await _context.SaveChangesAsync();
+                return true;
             }
             catch (Exception e)
             {
